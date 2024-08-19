@@ -1,6 +1,6 @@
 <?php
 
-namespace src;
+namespace App;
 
 use Telegram\Bot\Api;
 use Telegram\Bot\Exceptions\TelegramSDKException;
