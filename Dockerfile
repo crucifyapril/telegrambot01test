@@ -1,5 +1,5 @@
 # Используем официальный образ PHP
-FROM php:8.3-cli
+FROM php:8.3-fpm
 
 # Устанавливаем необходимые расширения PHP
 # RUN docker-php-ext-install pdo pdo_mysql
