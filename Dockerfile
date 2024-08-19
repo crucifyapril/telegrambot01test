@@ -21,4 +21,4 @@ WORKDIR /app
 #RUN composer install
 
 # Запускаем бота
-CMD [ "php", "./bot.php" ]
+# CMD [ "php", "./bot.php" ]
