@@ -6,3 +6,10 @@ services:
     environment:
       - TELEGRAM_BOT_TOKEN=7273381403:AAE-EjxshXqFemoRaKrxrKYDpZtQgm6MluE
     restart: always
+  web:
+    image: nginx:1.24  # Используем последний образ Nginx
+    ports:
+      - "80:80"  # Порт на хосте : порт в контейнере
+    volumes:
+      - .:/app  # Монтируем локальную директорию в контейнер
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf  # Монтируем конфигурационный файл Nginx
