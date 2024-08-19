@@ -1,0 +1,8 @@
+services:
+  telegram-bot:
+    build: .
+    volumes:
+      - .:/app
+    environment:
+      - TELEGRAM_BOT_TOKEN=7273381403:AAE-EjxshXqFemoRaKrxrKYDpZtQgm6MluE
+    restart: always
