@@ -23,11 +23,17 @@ class Bot
             $chatId = $message['chat']['id'];
             $text = $message['text'];
 
-            // Отправляем обратно полученное сообщение
-            $telegram->sendMessage([
-                'chat_id' => $chatId,
-                'text' => 'ты ввел: ' . $text
-            ]);
+            if ($text === '/start') {
+                $telegram->sendMessage([
+                    'chat_id' => $chatId,
+                    'text' => 'hello',
+                ]);
+            } else {
+                $telegram->sendMessage([
+                    'chat_id' => $chatId,
+                    'text' => 'ты ввел: ' . $text
+                ]);
+            }
         }
     }
 }
