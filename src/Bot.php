@@ -26,7 +26,7 @@ class Bot
             // Отправляем обратно полученное сообщение
             $telegram->sendMessage([
                 'chat_id' => $chatId,
-                'text' => $text
+                'text' => 'ты ввел: ' . $text
             ]);
         }
     }
