@@ -28,6 +28,16 @@ class Bot
                     'chat_id' => $chatId,
                     'text' => 'hello',
                 ]);
+            } elseif ($text === '/create_file') {
+                mkdir('files');
+                $file = fopen('files/file.txt', 'w');
+                fwrite($file, 'hello');
+                fclose($file);
+
+                $telegram->sendMessage([
+                    'chat_id' => $chatId,
+                    'text' => 'create file',
+                ]);
             } else {
                 $telegram->sendMessage([
                     'chat_id' => $chatId,
