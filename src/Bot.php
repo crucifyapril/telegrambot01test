@@ -15,7 +15,7 @@ class Bot
         $telegram = new Api(getenv('TELEGRAM_BOT_TOKEN'));
 
         // Получаем данные из вебхука
-        $update = $telegram->getWebhookUpdates();
+        $update = $telegram->getWebhookUpdate();
 
         // Проверяем, есть ли сообщение
         if (isset($update['message'])) {
