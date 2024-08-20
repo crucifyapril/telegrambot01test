@@ -31,7 +31,7 @@ class Bot
             } else {
                 $telegram->sendMessage([
                     'chat_id' => $chatId,
-                    'text' => 'ты ввел: ' . $text
+                    'text' => 'ты ввел неизвестную команду'
                 ]);
             }
         }
