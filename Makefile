@@ -6,3 +6,5 @@ build:
 	@docker compose build
 logs:
 	@docker compose logs -f
+vendor:
+  @docker compose run --rm telegram-bot composer install

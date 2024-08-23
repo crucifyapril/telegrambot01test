@@ -13,6 +13,7 @@ class Bot
 
     public function __construct()
     {
+
         $connectionParams = [
             'url' => 'sqlite:///' . __DIR__ . '/../database.sqlite',
             'driver' => 'pdo_sqlite',
