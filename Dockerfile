@@ -1,14 +1,17 @@
 # Используем официальный образ PHP
 FROM php:8.3-fpm
 
-# Устанавливаем необходимые расширения PHP
-RUN docker-php-ext-install pdo pdo_sqlite
-
 # Устанавливаем необходимые инструменты
 RUN apt-get update && apt-get install -y \
+    sqlite3 \
+    libsqlite3-dev \
+    pkg-config \
     git \
     unzip \
     && rm -rf /var/lib/apt/lists/*
+
+# Устанавливаем необходимые расширения PHP
+RUN docker-php-ext-install pdo pdo_sqlite
 
 # Устанавливаем Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer

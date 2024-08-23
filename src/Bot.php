@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Doctrine\DBAL\Exception;
 use Telegram\Bot\Api;
 use Telegram\Bot\Exceptions\TelegramSDKException;
 use Doctrine\DBAL\DriverManager;
@@ -13,13 +14,15 @@ class Bot
     public function __construct()
     {
         $connectionParams = [
-            'url' => 'sqlite:///database.sqlite',
+            'url' => 'sqlite:///' . __DIR__ . '/../database.sqlite',
+            'driver' => 'pdo_sqlite',
         ];
         $this->conn = DriverManager::getConnection($connectionParams);
     }
 
     /**
      * @throws TelegramSDKException
+     * @throws Exception
      */
     public function run()
     {
