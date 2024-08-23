@@ -4,9 +4,20 @@ namespace App;
 
 use Telegram\Bot\Api;
 use Telegram\Bot\Exceptions\TelegramSDKException;
+use Doctrine\DBAL\DriverManager;
 
 class Bot
 {
+    private $conn;
+
+    public function __construct()
+    {
+        $connectionParams = [
+            'url' => 'sqlite:///database.sqlite',
+        ];
+        $this->conn = DriverManager::getConnection($connectionParams);
+    }
+
     /**
      * @throws TelegramSDKException
      */
@@ -26,17 +37,16 @@ class Bot
             if ($text === '/start') {
                 $telegram->sendMessage([
                     'chat_id' => $chatId,
-                    'text' => 'hello',
+                    'text' => 'Please enter your username:',
                 ]);
-            } elseif ($text === '/create_file') {
-                mkdir('files');
-                $file = fopen('files/file.txt', 'w');
-                fwrite($file, 'hello');
-                fclose($file);
+            } elseif ($text !== '/start') {
+                // Запись никнейма в базу данных
+                $stmt = $this->conn->executeQuery('INSERT INTO users (username) VALUES (?)', [$text]);
 
+                // Отправка подтверждения
                 $telegram->sendMessage([
                     'chat_id' => $chatId,
-                    'text' => 'create file',
+                    'text' => 'Your username has been saved!',
                 ]);
             } else {
                 $telegram->sendMessage([

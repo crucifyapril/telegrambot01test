@@ -2,7 +2,7 @@
 FROM php:8.3-fpm
 
 # Устанавливаем необходимые расширения PHP
-# RUN docker-php-ext-install pdo pdo_mysql
+RUN docker-php-ext-install pdo pdo_sqlite
 
 # Устанавливаем необходимые инструменты
 RUN apt-get update && apt-get install -y \
