@@ -2,10 +2,9 @@
 
 namespace App;
 
-use Doctrine\DBAL\Exception;
+use mysqli;
 use Telegram\Bot\Api;
 use Telegram\Bot\Exceptions\TelegramSDKException;
-use Doctrine\DBAL\DriverManager;
 
 class Bot
 {
@@ -14,11 +13,6 @@ class Bot
     public function __construct()
     {
 
-        $connectionParams = [
-            'url' => 'sqlite:///' . __DIR__ . '/../database.sqlite',
-            'driver' => 'pdo_sqlite',
-        ];
-        $this->conn = DriverManager::getConnection($connectionParams);
     }
 
     /**
@@ -33,31 +27,34 @@ class Bot
         $update = $telegram->getWebhookUpdate();
 
         // Проверяем, есть ли сообщение
-        if (isset($update['message'])) {
-            $message = $update['message'];
-            $chatId = $message['chat']['id'];
-            $text = $message['text'];
+        $message = $update['message'];
+        $chatId = $message['chat']['id'];
+        $text = $message['text'];
 
-            if ($text === '/start') {
-                $telegram->sendMessage([
-                    'chat_id' => $chatId,
-                    'text' => 'Please enter your username:',
-                ]);
-            } elseif ($text !== '/start') {
-                // Запись никнейма в базу данных
-                $stmt = $this->conn->executeQuery('INSERT INTO users (username) VALUES (?)', [$text]);
-
-                // Отправка подтверждения
-                $telegram->sendMessage([
-                    'chat_id' => $chatId,
-                    'text' => 'Your username has been saved!',
-                ]);
-            } else {
-                $telegram->sendMessage([
-                    'chat_id' => $chatId,
-                    'text' => 'ты ввел неизвестную команду'
-                ]);
+        if ($text === '/start') {
+            $response = "Введите ваш никнейм:";
+            $telegram->sendMessage([
+                'chat_id' => $chatId,
+                'text' => $response
+            ]);
+        } elseif (isset($update['message']['text'])) {
+            $nickname = $update['message']['text'];
+            // Сохраните никнейм в базу данных
+            $mysqli = new mysqli('db', 'telegram_bot', 'telegram_bot', 'telegram_bot');
+            if ($mysqli->connect_error) {
+                die('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error);
             }
+            $stmt = $mysqli->prepare("INSERT INTO users (chat_id, nickname) VALUES (?, ?)");
+            $stmt->bind_param('is', $chatId, $nickname);
+            $stmt->execute();
+            $stmt->close();
+            $mysqli->close();
+
+            $response = "Ваш никнейм сохранен: $nickname";
+            $telegram->sendMessage([
+                'chat_id' => $chatId,
+                'text' => $response
+            ]);
         }
-    }
+            }
 }

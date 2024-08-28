@@ -13,3 +13,17 @@ services:
     volumes:
       - .:/app  # Монтируем локальную директорию в контейнер
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf  # Монтируем конфигурационный файл Nginx
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: telegram_bot
+      MYSQL_USER: telegram_bot
+      MYSQL_PASSWORD: telegram_bot
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
