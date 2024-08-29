@@ -9,7 +9,6 @@ use Telegram\Bot\Exceptions\TelegramSDKException;
 
 class Bot
 {
-    private $conn;
 
     public function __construct()
     {
